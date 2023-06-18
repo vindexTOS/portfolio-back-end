@@ -1,4 +1,4 @@
-import Blog from '../moduls/BlogPostModul.js'
+import Blog from '../moduls/BlogPostModel.js'
 
 export const PostBlog = async (req, res) => {
   const { title, dec, img, time, type } = req.body

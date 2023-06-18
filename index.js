@@ -4,6 +4,7 @@ import { config } from 'dotenv'
 import connectDB from './connect/connectDb.js'
 import BlogPostRouter from './routes/BlogRouter.js'
 import authRouter from './routes/AuthRouter.js'
+import SkillRouter from './routes/SkillRouter.js'
 import helmet from 'helmet'
 const app = express()
 config()
@@ -12,6 +13,7 @@ app.use(helmet())
 app.use(cors())
 app.use('/blog', BlogPostRouter)
 app.use('/auth', authRouter)
+app.use('/skill', SkillRouter)
 const port = 3000
 
 const start = async () => {

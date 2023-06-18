@@ -1,5 +1,5 @@
 import multer from 'multer'
-import ImageModel from '../moduls/ImageModel.js'
+import TestModel from '../moduls/TestModel.js'
 
 const Storage = multer.diskStorage({
   destination: 'uploads',

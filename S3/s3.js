@@ -2,7 +2,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import { config } from 'dotenv'
 import multer from 'multer'
 import fs from 'fs'
-import ImgSchema from '../moduls/ImageModel.js'
+import TestModel from '../moduls/TestModel.js'
 config()
 
 const bucketName = process.env.AWS_BUCKET_NAME
@@ -36,7 +36,7 @@ export const uploadImage = async (req, res) => {
     const command = new PutObjectCommand(params)
     const { Location } = await s3.send(command)
 
-    const photo = await ImgSchema.create({ url: Location })
+    const photo = await TestModel.create({ url: Location })
 
     res.status(200).json({ message: 'Image uploaded successfully', photo })
   } catch (error) {
