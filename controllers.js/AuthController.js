@@ -1,7 +1,8 @@
 import AuthModel from '../moduls/AuthModel.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-
+import { config } from 'dotenv'
+config()
 export const logIn = async (req, res) => {
   const { password, email } = req.body
 
@@ -17,13 +18,9 @@ export const logIn = async (req, res) => {
       return res.status(401).json({ msg: 'invalid password' })
     }
     user.password = null
-    const token = jwt.sign(
-      { user },
-      `JASONBLAHAISBESTGAMERONYOUTUBERANDITHINKIWILLBE99339SOYEAHREZORRAMONISBESTPERSONONTHEPLANEBIGUPSNWO`,
-      {
-        expiresIn: '1h',
-      },
-    )
+    const token = jwt.sign({ user }, process.env.JWT_STRING, {
+      expiresIn: '1h',
+    })
     res.set('Authorization', `Bearer ${token}`)
     return res.status(200).json({ token, user })
   } catch (error) {

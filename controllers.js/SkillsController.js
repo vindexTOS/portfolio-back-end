@@ -56,3 +56,35 @@ export const PostSkill = async (req, res) => {
     return res.status(500).json({ msg: 'Internal Server Error' })
   }
 }
+
+export const getSKills = async (req, res) => {
+  try {
+    let skills = await SkillModel.find({})
+
+    if (!skills) {
+      return res.status(400).json({ msg: 'Skills Is Empity ' })
+    }
+    skills = skills.reverse()
+    return res.status(200).json(skills)
+  } catch (error) {
+    return res.status(500).json({ msg: 'Server Error 500' })
+  }
+}
+
+export const deleteSkill = async (req, res) => {
+  const { id } = req.params
+
+  const isSkillExist = await SkillModel.findById({ _id: id })
+
+  if (!isSkillExist) {
+    return res.status(400).json({ msg: `skill with id of ${id} does not exit` })
+  }
+
+  try {
+    await SkillModel.findByIdAndDelete({ _id: id })
+
+    return res.status(200).json({ msg: 'Skill Has Been Deleted' })
+  } catch (error) {
+    return res.status(500).json({ msg: 'Server Error' })
+  }
+}

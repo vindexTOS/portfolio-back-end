@@ -24,15 +24,16 @@ const verifyToken = async (token) => {
 }
 
 export const authMiddleware = async (req, res, next) => {
-  // trim
-  const token = req.header('Authorization').replace('Bearer', '').trim()
-  // console.log(token)
-
-  if (!token) {
-    return res.status(401).json({ msg: 'No token' })
-  }
-
+  console.log(req.header)
   try {
+    // trim
+    const token = req.header('Authorization').replace('Bearer', '').trim()
+    // console.log(token)
+
+    if (!token) {
+      return res.status(401).json({ msg: 'No token' })
+    }
+
     const user = await verifyToken(token)
     req.user = user
     next()
