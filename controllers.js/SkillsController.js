@@ -72,7 +72,9 @@ export const getSKills = async (req, res) => {
 }
 
 export const deleteSkill = async (req, res) => {
-  const { id } = req.params
+  let { id } = req.params
+  id = id.replace('\n', '')
+
   try {
     const isSkillExist = await SkillModel.findById({ _id: id })
 
@@ -91,9 +93,13 @@ export const deleteSkill = async (req, res) => {
 }
 
 export const updateSkill = async (req, res) => {
-  const { id } = req.params
+  let { id } = req.params
+  id = id.replace('\n', '')
+  const { title, color, bgo } = req.body
+  console.log(req.body)
   try {
     const isSkillExist = await SkillModel.findById({ _id: id })
+
     if (!isSkillExist) {
       return res
         .status(400)
@@ -115,16 +121,23 @@ export const updateSkill = async (req, res) => {
       const { Location } = await s3.send(command) // getting URL from S3 bucket
 
       const photoURL = `https://${bucketName}.s3.amazonaws.com/${fileName}` // manualy creating link
-
+      console.log(photoURL)
       // Delete the file from the server after upload
       fs.unlinkSync(req.file.path)
-      await SkillModel.findByIdAndUpdate({ ...req.body, avatar: photoURL })
+      const data = {
+        icon: photoURL,
+        title,
+        color,
+        bgo,
+      }
+      await SkillModel.findByIdAndUpdate(id, data)
       return res.status(200).json({ msg: 'Skill Has Been Updated' })
     } else {
       await SkillModel.findByIdAndUpdate(req.body)
       return res.status(200).json({ msg: 'Skill Has Been Updated' })
     }
   } catch (error) {
-    return res.status(500).json({ msg: 'Server Error', error: error.massage })
+    console.log(error)
+    return res.status(500).json({ msg: 'Server Error', error: error })
   }
 }
